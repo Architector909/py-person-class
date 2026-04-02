@@ -14,7 +14,8 @@ def create_person_list(
     people_dicts: List[Dict[str, Optional[str]]]
 ) -> List[Person]:
     person_list: List[Person] = [
-        Person(person_data["name"], person_data["age"]) for person_data in people_dicts
+        Person(person_data["name"], person_data["age"])
+        for person_data in people_dicts
     ]
 
     for idx, person_data in enumerate(people_dicts):
