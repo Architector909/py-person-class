@@ -1,38 +1,31 @@
+from typing import List, Dict, Optional
+
+
 class Person:
-    # Class attribute to store all instances by name
-    people = {}
+    people: Dict[str, "Person"] = {}
 
     def __init__(self, name: str, age: int) -> None:
-        self.name = name
-        self.age = age
-        # Automatically add the instance to the class dictionary
+        self.name: str = name
+        self.age: int = age
         Person.people[name] = self
 
 
-def create_person_list(people_data: list) -> list:
-    # Clear the class attribute to ensure a fresh start
-    Person.people = {}
+def create_person_list(
+    people_dicts: List[Dict[str, Optional[str]]]
+) -> List[Person]:
+    person_list: List[Person] = [
+        Person(p["name"], p["age"]) for p in people_dicts
+    ]
 
-    # Phase 1: Create all Person instances
-    for p_dict in people_data:
-        Person(p_dict["name"], p_dict["age"])
+    for idx, p in enumerate(people_dicts):
+        person_instance = person_list[idx]
 
-    # Phase 2: Assign spouse attributes and build the return list
-    result = []
-    for p_dict in people_data:
-        person_instance = Person.people[p_dict["name"]]
+        wife_name = p.get("wife")
+        if wife_name is not None:
+            person_instance.wife = Person.people[wife_name]
 
-        # Check for 'wife' or 'husband' keys
-        for spouse_key in ["wife", "husband"]:
-            if spouse_key in p_dict and p_dict[spouse_key] is not None:
-                spouse_name = p_dict[spouse_key]
-                # Set the attribute as a reference to the Person object
-                setattr(
-                    person_instance,
-                    spouse_key,
-                    Person.people[spouse_name]
-                )
+        husband_name = p.get("husband")
+        if husband_name is not None:
+            person_instance.husband = Person.people[husband_name]
 
-        result.append(person_instance)
-
-    return result
+    return person_list
