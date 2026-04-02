@@ -7,8 +7,6 @@ class Person:
     def __init__(self, name: str, age: int) -> None:
         self.name: str = name
         self.age: int = age
-        self.wife: Optional["Person"] = None
-        self.husband: Optional["Person"] = None
         Person.people[name] = self
 
 
@@ -22,7 +20,7 @@ def create_person_list(
         person_instance = Person(person_data["name"], person_data["age"])
         person_list.append(person_instance)
 
-    # Second pass: link spouses
+    # Second pass: dynamically link spouses
     for idx, person_data in enumerate(people_dicts):
         person_instance = person_list[idx]
 
