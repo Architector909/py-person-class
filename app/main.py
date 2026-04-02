@@ -20,7 +20,7 @@ def create_person_list(
         person_instance = Person(person_data["name"], person_data["age"])
         person_list.append(person_instance)
 
-    # Second pass: dynamically link spouses
+    # Second pass: dynamically add spouse attributes only if present
     for idx, person_data in enumerate(people_dicts):
         person_instance = person_list[idx]
 
