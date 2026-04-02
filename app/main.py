@@ -1,35 +1,35 @@
-from typing import List, Dict, Optional
-
-
 class Person:
-    people: Dict[str, "Person"] = {}
+    # Class attribute to store all instances by name
+    people = {}
 
-    def __init__(self, name: str, age: int) -> None:
-        self.name: str = name
-        self.age: int = age
+    def __init__(self, name: str, age: int):
+        self.name = name
+        self.age = age
+        # Automatically add the instance to the class dictionary
         Person.people[name] = self
 
+def create_person_list(people_data: list) -> list:
+    # Clear the class attribute to ensure a fresh start for each function call
+    Person.people = {}
 
-def create_person_list(
-    people_dicts: List[Dict[str, Optional[str]]]
-) -> List[Person]:
-    person_list: List[Person] = []
+    # Phase 1: Create all Person instances
+    # This populates Person.people so we can look up spouses later
+    for p_dict in people_data:
+        Person(p_dict["name"], p_dict["age"])
 
-    # First pass: create all Person instances
-    for person_data in people_dicts:
-        person_instance = Person(person_data["name"], person_data["age"])
-        person_list.append(person_instance)
+    # Phase 2: Assign spouse attributes and build the return list
+    result = []
+    for p_dict in people_data:
+        person_instance = Person.people[p_dict["name"]]
 
-    # Second pass: dynamically add spouse attributes only if present
-    for idx, person_data in enumerate(people_dicts):
-        person_instance = person_list[idx]
+        # Check for 'wife' or 'husband' keys
+        for spouse_key in ["wife", "husband"]:
+            if spouse_key in p_dict:
+                spouse_name = p_dict[spouse_key]
+                if spouse_name is not None:
+                    # Set the attribute as a reference to the existing Person object
+                    setattr(person_instance, spouse_key, Person.people[spouse_name])
 
-        wife_name = person_data.get("wife")
-        if wife_name is not None:
-            person_instance.wife = Person.people[wife_name]
+        result.append(person_instance)
 
-        husband_name = person_data.get("husband")
-        if husband_name is not None:
-            person_instance.husband = Person.people[husband_name]
-
-    return person_list
+    return result
