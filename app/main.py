@@ -13,6 +13,8 @@ from typing import List, Dict, Optional  # noqa: E402
 def create_person_list(
     people_dicts: List[Dict[str, Optional[str]]]
 ) -> List[Person]:
+    Person.people.clear()
+
     person_list: List[Person] = [
         Person(person_data["name"], person_data["age"])
         for person_data in people_dicts
