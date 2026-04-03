@@ -1,13 +1,13 @@
-from typing import List, Dict, Optional
-
-
 class Person:
-    people: Dict[str, "Person"] = {}
+    people = {}
 
     def __init__(self, name: str, age: int) -> None:
-        self.name: str = name
-        self.age: int = age
+        self.name = name
+        self.age = age
         Person.people[name] = self
+
+
+from typing import List, Dict, Optional
 
 
 def create_person_list(
