@@ -7,7 +7,7 @@ class Person:
         Person.people[name] = self
 
 
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional  # noqa: E402
 
 
 def create_person_list(
